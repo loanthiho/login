@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,90 +20,55 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/welcome', function () {
-    return 'Chào mừng các bạn đã đến với PNV';
+
+Route::get('trangchu', [PageController::class, 'getIndex']);
+
+Route::get('loaisanpham/{type}', [PageController::class, 'getLoaiSP']);
+
+Route::get('chitietsanpham', [PageController::class, 'getDetail']);
+
+Route::get('lienhe', [PageController::class, 'getContact']);
+
+Route::get('gioithieu', [PageController::class, 'getAbout']);
+
+// admin 
+
+Route::get('admin', [AdminController::class, 'getIndexAdmin']);
+
+Route::get('/admin-add-form', [AdminController::class, 'getAdminAdd'])->name('add-product');
+
+Route::post('/admin-add-form', [AdminController::class, 'postAdminAdd']);
+
+Route::get('/admin-edit-form/{id}', [AdminController::class, 'getAdminEdit']);
+
+Route::post('/admin-edit', [AdminController::class, 'postAdminEdit']);
+
+Route::post('/admin-delete/{id}', [AdminController::class, 'postAdminDelete']);
+
+Route::get('/admin-export', [AdminController::class, 'exportAdminProduct'])->name('export');
+
+//Đăng Ký//Đăng NhậpF
+Route::get('/login', function () {
+    return view('users.login');
 });
+Route::post('/login', [UserController::class, 'login']);
+Route::get('/logout', [UserController::class, 'logout']);
 
-//Chạy controller
-Route::get('/getIndex', [UserController::class, 'getIndex']);
-
-
-//Tính tổng
-Route::get('/sum', [App\Http\Controllers\SumController::class, 'index']);
-Route::post('/sum', [App\Http\Controllers\SumController::class, 'Summ']);
-
-//AreaOfShape
-Route::get('/AreaOfShape', [App\Http\Controllers\AreaController::class, 'index']);
-Route::post('/AreaOfShape', [App\Http\Controllers\AreaController::class, 'Area']);
-
-
-//Singup
-
-Route::get('signup',[App\Http\Controllers\SignupController::class ,'index']);
-Route::post('signup',[App\Http\Controllers\SignupController::class ,'displayInfor']);
-
-//
-Route::post('/valida', [ValidationController::class, "validation"]);
-
-Route::get('/addproduct',[ListProductsController::class,"showAddForm"])->name('addproduct');
-
-Route::post('/addproduct',[ListProductsController::class,"creatSession"]);
-
-Route::get('/showproducts',[ListProductsController::class,"showProduct"])->name('showproducts');
-
-//sanpham
-Route::get('trangchu', [PageController::class, "getIndex"])->name('trangchu');
-
-Route::get('/detail/{id}',[PageController::class,'getDetail']);
-Route::get('/themgiohang/{id}', 'YourController@methodName')->name('themgiohang');
-Route::get('/type/{id}',[PageController::class,'getLoaiSp']);
-
-Route::get('Loai-san-pham/{type}',[
-    'as'=>'Loaisanpham',
-    'uses'=>'PageController@getLoaiSp'
-]);
-
-Route::get('/admin', [PageController::class, 'getIndexAdmin']);
-Route::get('/export', [PageController::class, 'exportData'])->name('export');
-Route::get('/add-product', [PageController::class, 'getAddProduct'])->name('add-product');
-
-Route::get('/admin/add', [PageController::class, 'getAdminAdd'])->name('add-product');
-Route::post('/admin-add-form', [PageController::class, 'postAdminAdd']);											
-
-Route::get('/admin-edit-form/{id}', [PageController::class, 'getAdminEdit']);												
-Route::post('/admin-edit',[PageController::class,'postAdminEdit']);
-
-Route::post('/admin-delete/{id}', [PageController::class, 'postAdminDelete']);		
-
-
-Route::get('/register',function () {						
-    return view('users.register');						
-});		
-Route::get('/login', function () {							
-    return view('users.login');							
-});					
-
-
-Route::post('/register',[UserController::class,'Register']);
-
-						
-
-Route::post('/login',[UserController::class,'Login']);
-
-Route::get('/logout', [UserController::class, 'logout'])->name('logout');
-
-
-Route::get('/register',function(){
+Route::get('/register', function () {
     return view('users.register');
 });
+Route::post('/register', [UserController::class, 'Register']);
 
-Route::post('/register',[UserController::class,'Register']);
-Route::get('/login', [UserController::class, 'showLoginForm'])->name('login');
-Route::post('/login', 'App\Http\Controllers\UserController@postLogin')->name('login');
+///CART
+Route::get('add-to-cart/{id}', [PageController::class, 'getAddToCart'])->name('themgiohang');
+Route::get('del-cart/{id}', [PageController::class, 'getDelItemCart'])->name('xoagiohang');
+
+//-------------------------------------CHECKOUT----------------------------------------------------//
+Route::get('check-out', [PageController::class, 'getCheckout'])->name('dathang');
+Route::post('check-out', [PageController::class, 'postCheckout'])->name('dathang');
 
 
 
-
-
-
-
+//-------------------------------------WISHLIST----------------------------------------------------//
+Route::get('/wishlist/add/{id}', [PageController::class, 'addToWishlist'])->name('wishlist.add');
+Route::get('/wishlist/remove/{id}', [PageController::class, 'removeFromWishlist'])->name('wishlist.remove');

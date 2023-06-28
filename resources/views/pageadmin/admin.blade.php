@@ -1,13 +1,10 @@
 @extends('master')
-
 @section('content')
-
 <div class="space50">&nbsp;</div>
 <div class="container beta-relative">
     <div class="container">
-        <div class="col-12 col-md-6" style="background: red;color:white">Số sản phẩm: {{count($products)}}</div>
-        <div class="col-12 col-md-6" style="background: blue;color:white">
-            Đã bán: <br />
+        <div class="col-12 col-md-6" style="background: red;color:white">Số sản phẩm: {{count($product)}}</div>
+        <div class="col-12 col-md-6" style="background: blue;color:white">Đã bán: <br />
             <p>Tổng: {{$sumSold}}</p>
             <p>Hôm nay: 1</p>
             <p>Tháng này: 3</p>
@@ -34,11 +31,12 @@
                 <th scope="col">Promotion_price</th>
                 <th scope="col">Unit</th>
                 <th scope="col">New</th>
-                <th scope="col"><a href="{{route('add-product')}}" class="btn btn-primary" style="width:80px;">Add</a></th>
+                <th scope="col"><a href="{{route('add-product')}}" class="btn btn-primary" style="width:80px;">Add</a>
+                </th>
             </tr>
         </thead>
         <tbody>
-            @foreach($products as $product)
+            @foreach($product as $product)
             <tr class="products-list-admin">
                 <th scope="row">{{$product->id}}</th>
                 <th><img src="source/image/product/{{$product->image}}" alt="image" style="height: 100px;" /></th>
@@ -50,31 +48,23 @@
                 <td>{{$product->unit}}</td>
                 <td>{{$product->new}}</td>
                 <td>
-                    <a href='admin-edit-form/{{$product->id}}' type="submit" class="btn btn-warning" style="width:80px;">Edit</a>
-                    <button type="button" class="btn btn-danger deleteButton" style="width:80px;" data-product-id="{{$product->id}}">Delete</button>
+                    <a href='admin-edit-form/{{$product->id}}' type="submit" class="btn btn-warning"
+                        style="width:80px;">Edit</a>
+                    <form role="form" action="admin-delete/{{$product->id}}" method="post">
+                        @csrf
+                        <button name="edit" type="submit" class="btn btn-danger" style="width:80px;">Delete</button>
+                    </form>
                 </td>
+
             </tr>
             @endforeach
         </tbody>
     </table>
     <div class="space50">&nbsp;</div>
 </div>
-
 <script>
-    // Xác nhận xóa sản phẩm
-    var deleteButtons = document.getElementsByClassName('deleteButton');
-    Array.from(deleteButtons).forEach(function(button) {
-        button.addEventListener('click', function() {
-            var productId = this.getAttribute('data-product-id');
-            if (confirm('Are you sure you want to delete this product?')) {
-                // Nếu người dùng xác nhận, thực hiện xóa
-                window.location.href = "admin-delete/" + productId;
-            }
-        });
-    });
-
-    $(document).ready(function() {
-        $('#table_admin_product').DataTable();
-    });
+$(document).ready(function() {
+    $('#table_admin_product').DataTable();
+});
 </script>
 @endsection

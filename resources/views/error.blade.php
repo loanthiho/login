@@ -1,9 +1,3 @@
-@if (count($errors)>0)
-    <div class="alert alert-danger"></div>
-    <ul>
-        @foreach ($errors ->all() as $error )
-        <li>{!! $error !!}</li>
-
-        @endforeach
-    </ul>
+@if (session('error'))
+    <div class="alert alert-danger text-center">{{ session('error') }}</div>
 @endif
