@@ -22,7 +22,7 @@ class PageController extends Controller
         $wishlist = Wishlists::where('user_id', Auth::id())->get();
         $wishlistCount = $wishlist->count();
         $wishlistData = Wishlists::getWishlistData();
-        return view('page.trangchu', compact('slide', 'new_product', 'sanpham_khuyenmai' ,'wishlist','wishlistCount'));//tthem sau,'wishlistData',
+        return view('page.trangchu', compact('slide', 'new_product', 'sanpham_khuyenmai' ,'wishlist','wishlistCount'));
     }
     public function getLoaiSP($type)
     {
@@ -36,7 +36,6 @@ class PageController extends Controller
     public function getDetail(Request $req)
     {
         $sanpham = Product::where('id', $req->id)->first();
-        // $splienquan = Product::where('id','<>',$sanpham->id,'and','id_type','=',$sanpham->id_type,)->paginate(3);
         return view('page.chitiet_sanpham', compact('sanpham'));
     }
 
